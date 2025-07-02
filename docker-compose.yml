@@ -1,0 +1,15 @@
+name: project1-nginx
+services:
+  mynginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mynginx_container
+    ports:
+      - "8081:80"
+    image: mynginx_image_project1
+    volumes:
+      - mynginx_vol:/usr/share/nginx/html
+
+volumes:
+  mynginx_vol:
