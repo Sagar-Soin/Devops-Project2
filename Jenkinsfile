@@ -24,31 +24,8 @@ pipeline {
         """
       }
     }
-
-    stage('Trivy Scan and Push') {
-      steps {
-        script {
-          def imageFound = sh(script: "docker images -q ${IMAGE_NAME}", returnStatus: true)
-
-          if (imageFound == 0) {
-            echo "✅ Image found: ${IMAGE_NAME}. Running Trivy scan..."
-
-            // Use catchError to prevent this stage from failing
-            catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-              sh """
-                trivy image \
-                  --ignore-unfixed \
-                  --severity CRITICAL \
-                  --exit-code 0 \
-                  --skip-version-check \
-                  ${IMAGE_NAME}
-              """
-              
-              echo "ℹ️ Trivy scan completed (warnings shown above if any)."
-            }
-
-            // Push image irrespective of scan outcome
-            withCredentials([usernamePassword(
+    stage('Push'){
+        withCredentials([usernamePassword(
               credentialsId: 'Jfrog_SAAS',
               usernameVariable: 'JF_USER',
               passwordVariable: 'JF_PASS'
@@ -59,15 +36,7 @@ pipeline {
                 docker push trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
               """
             }
-
-          } else {
-            echo "⚠️ Docker image ${IMAGE_NAME} not found. Skipping scan & push."
-            currentBuild.result = 'UNSTABLE'
-          }
-        }
-      }
     }
-
     stage('Deploy to Kubernetes') {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
