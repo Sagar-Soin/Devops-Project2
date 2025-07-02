@@ -4,14 +4,14 @@ pipeline{
     environments{
         IMAGE_NAME = 'my-nginx-webserver-pipeline'
         JFROG_REPO = 'https://trialfd07jy.jfrog.io/artifactory/sagar-my-nginx-jfrog/'
-        GIT_REPO_URL = ''
+        GIT_REPO_URL = 'https://github.com/Sagar-Soin/Devops-Project2.git'
         JFROG_URL = 'https://trialfd07jy.jfrog.io'
         KUBECONFIG = credentials('kubeconfig')   
     }
     stages{
         stage('Checkout'){
             steps{
-                git branch: 'master', url: ''
+                git branch: 'master', url: "${GIT_REPO_URL}"
             }    
         }
         stage('Build the Image using DOcker'){
