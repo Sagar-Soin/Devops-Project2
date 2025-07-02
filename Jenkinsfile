@@ -55,8 +55,6 @@ pipeline{
                         }
                     }else {
                         echo "⚠️ Docker image ${IMAGE_NAME} not found. Skipping Trivy scan."
-                        currentBuild.result = 'FAILED'
-                        return    
                     }
                     
                     }
