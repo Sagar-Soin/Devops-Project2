@@ -38,7 +38,6 @@ pipeline{
                             returnStatus: true
                         )
                         if (trivyResult != 0){
-                            #error("❌ Trivy scan failed due to critical vulnerabilities.")
                             echo "❌  Trivy scan Failed: critical vulnerabilities found."
                         } else {
                             echo "✅ Trivy scan passed: no critical vulnerabilities."
