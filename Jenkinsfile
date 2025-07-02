@@ -32,15 +32,15 @@ pipeline{
                         returnStatus: true
                     )
                     if (imageExists == 0){
-                        echo "✅ Image found: ${IMAGE_NAME}. Running Trivy scan..."
+                        echo "Image found: ${IMAGE_NAME}. Running Trivy scan..."
                         def trivyResult = sh(
                             script: "trivy image --ignore-unfixed  --severity CRITICAL ${IMAGE_NAME}",
                             returnStatus: true
                         )
                         if (trivyResult != 0){
-                            echo "❌  Trivy scan Failed: critical vulnerabilities found."
+                             echo "Trivy scan completed: Critical vulnerabilities found."
                         } else {
-                            echo "✅ Trivy scan passed: no critical vulnerabilities."
+                            echo "Trivy scan passed: no critical vulnerabilities."
                         }
                         withCredentials([usernamePassword(
                             credentialsId: 'Jfrog_SAAS',
@@ -53,13 +53,12 @@ pipeline{
                                 docker push trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
                                 echo 'Image Pushed to Jfrog Artifactory Successfully'
                                 """
-                        }
+                            }
                     }else {
-                        echo "⚠️ Docker image ${IMAGE_NAME} not found. Skipping Trivy scan."
-                        currentBuild.result = 'SUCCESS'
+                        echo "Docker image ${IMAGE_NAME} not found. Skipping Trivy scan."
+                        
                     }
                     
-                    }
                 }
             }
         }
