@@ -41,8 +41,8 @@ pipeline{
                             error("❌ Trivy scan failed due to critical vulnerabilities.")
                         } else {
                             echo "✅ Trivy scan passed: no critical vulnerabilities."
-                            withCredentials([usernamePassword{(
-                                credentialsId: '',
+                            withCredentials([usernamePassword(
+                                credentialsId: 'Jfrog_SAAS',
                                 usernameVariable: 'JF_USER',
                                 passwordVariable: 'JF_PASS'
                             )]){
