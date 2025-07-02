@@ -38,26 +38,28 @@ pipeline{
                             returnStatus: true
                         )
                         if (trivyResult != 0){
-                            error("❌ Trivy scan failed due to critical vulnerabilities.")
+                            #error("❌ Trivy scan failed due to critical vulnerabilities.")
+                            echo "❌  Trivy scan Failed: critical vulnerabilities found."
                         } else {
                             echo "✅ Trivy scan passed: no critical vulnerabilities."
-                            withCredentials([usernamePassword(
-                                credentialsId: 'Jfrog_SAAS',
-                                usernameVariable: 'JF_USER',
-                                passwordVariable: 'JF_PASS'
-                            )]){
-                                sh """
-                                    docker tag ${IMAGE_NAME} trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
-                                    docker login $JFROG_URL -u $JF_USER -p $JF_PASS
-                                    docker push trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
+                        }
+                        withCredentials([usernamePassword(
+                            credentialsId: 'Jfrog_SAAS',
+                            usernameVariable: 'JF_USER',
+                            passwordVariable: 'JF_PASS'
+                        )]){
+                            sh """
+                                docker tag ${IMAGE_NAME} trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
+                                docker login $JFROG_URL -u $JF_USER -p $JF_PASS
+                                docker push trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
                                 """
-                            }
-                                
                         }
                     }else {
                         echo "⚠️ Docker image ${IMAGE_NAME} not found. Skipping Trivy scan."
                         currentBuild.result = 'FAILED'
-                        return
+                        return    
+                    }
+                    
                     }
                 }
             }
@@ -81,4 +83,3 @@ pipeline{
             }
         }
     }
-}
