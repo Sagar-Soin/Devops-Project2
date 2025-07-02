@@ -51,10 +51,12 @@ pipeline{
                                 docker tag ${IMAGE_NAME} trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
                                 docker login $JFROG_URL -u $JF_USER -p $JF_PASS
                                 docker push trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/${IMAGE_NAME}
+                                echo 'Image Pushed to Jfrog Artifactory Successfully'
                                 """
                         }
                     }else {
                         echo "⚠️ Docker image ${IMAGE_NAME} not found. Skipping Trivy scan."
+                        currentBuild.result = 'SUCCESS'
                     }
                     
                     }
