@@ -1,7 +1,7 @@
 pipeline{
     agent any
     
-    environments{
+    environment{
         IMAGE_NAME = 'my-nginx-webserver-pipeline'
         JFROG_REPO = 'https://trialfd07jy.jfrog.io/artifactory/sagar-my-nginx-jfrog/'
         GIT_REPO_URL = 'https://github.com/Sagar-Soin/Devops-Project2.git'
