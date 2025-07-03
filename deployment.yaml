@@ -13,9 +13,22 @@ spec:
         app: my-nginx
     spec:
       containers:
-      - name: my-nginx
-        image: trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/my-nginx-webserver-pipeline
-        ports:
-        - containerPort: 80
+        - name: my-nginx
+          image: trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/my-nginx-webserver-pipeline
+          ports:
+            - containerPort: 80
       imagePullSecrets:
-      - name: jfrog-regcred
+        - name: jfrog-regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: my-nginx
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 8083   # Use a port in the 30000–32767 range
