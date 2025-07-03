@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: my-nginx
-          image: trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/my-nginx-webserver-pipeline
+          image: trialfd07jy.jfrog.io/sagar-my-nginx-jfrog/my-nginx-webserver-pipeline:v1
           ports:
             - containerPort: 80
       imagePullSecrets:
